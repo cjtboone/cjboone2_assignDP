@@ -4,25 +4,50 @@ import java.util.Random;
 
 public class Beediator {
     
+    /**
+     * Main job method for worker bees, checks if nearby
+     * rooms are not yet built -- builds them if so, randomly
+     * wanders otherwise until it reaches a viable room.
+     * @param bee Worker bee currently taking a turn
+     */
     public void buildRoom(Bee bee) {
         if (energyCheck(bee)) {
-            if (bee.getCurrent().isUnbuilt(bee.getX() + 1, bee.getY())) {
-                bee.getCurrent().getRoom(bee.getX() + 1, bee.getY()).build(bee.getHive());
+            if (bee.getCurrent().isUnbuilt(bee.getX(), bee.getY() + 1)) {
+                bee.getCurrent().getRoom(bee.getX(), bee.getY() + 1).build(bee.getHive());
             } else {
-                randMove(bee);
+                if (bee.getCurrent().isUnbuilt(bee.getX() + 1, bee.getY())) {
+                    bee.getCurrent().getRoom(bee.getX() + 1, bee.getY()).build(bee.getHive());
+                } else {
+                    if (bee.getCurrent().isUnbuilt(bee.getX() - 1, bee.getY())) {
+                        bee.getCurrent().getRoom(bee.getX() - 1, bee.getY()).build(bee.getHive());
+                    } else {
+                        if (bee.getCurrent().isUnbuilt(bee.getX(), bee.getY() - 1)) {
+                            bee.getCurrent().getRoom(bee.getX(),
+                                    bee.getY() - 1).build(bee.getHive());
+                        } else {
+                            randMove(bee);
+                        }
+                    }
+                }
             }
         } else {
             getRest(bee);
         }
     }
     
+    /**
+     * Main job method for drone bees, checks if bee is 
+     * already in hive and can deliver food or if it 
+     * makes to leave the hive.
+     * @param bee Drone bee currently taking a turn
+     */
     public void findFood(Bee bee) {
         if (energyCheck(bee)) {
             if (bee.hasFood()) {
                 if (bee.inHive()) {
                     bee.deliverFood();
-                    System.out.println(bee.getType() + " " + bee.getID() +
-                            " delivered food!");
+                    //System.out.println(bee.getType() + " " + bee.getId()
+                    //    + " delivered food!");
                 } else {
                     moveTowards(bee, bee.getHive());
                 }
@@ -42,6 +67,13 @@ public class Beediator {
         }
     }
     
+    /**
+     * Main job method for warrior bees, checks if there are
+     * any enemy bees on their current space, includes a unique 
+     * travel method that includes the ability to enter other
+     * hives.
+     * @param bee Warrior bee currently taking turn
+     */
     public void fightEnemy(Bee bee) {
         if (energyCheck(bee)) {
             if (bee.getCurrent().hasEnemy(bee.getX(), bee.getY(), bee)) {
@@ -61,14 +93,19 @@ public class Beediator {
         }
     }
     
+    /**
+     * Main job method for queen bees, checks if the hive can support
+     * another egg and then lays one if so.
+     * @param bee Queen bee currently taking turn
+     */
     public void layEgg(Bee bee) {
         if (!bee.getHive().isFull()) {
             Bee egg = new Bee(bee.getHive(), Type.EGG);
             bee.getCurrent().add(bee.getX(), bee.getY(), egg);
             bee.getHive().addBee(egg);
             Apiary.newBee(egg);
-            System.out.println(bee.getType().toString() + " " + bee.getID() +
-                    " of Hive " + bee.getHive().getFaction() + " laid an egg!");
+            System.out.println(bee.getType().toString() + " " + bee.getId() 
+                + " of Hive " + bee.getHive().getFaction() + " laid an egg!");
         } else {
             //message space
         }
@@ -82,8 +119,8 @@ public class Beediator {
                 mapMove(bee, hive.getMap());
             }
         } else {
-            if (Math.abs(bee.getX() - hive.getX()) > 
-                Math.abs(bee.getY() - hive.getY())) {
+            if (Math.abs(bee.getX() - hive.getX()) 
+                    > Math.abs(bee.getY() - hive.getY())) {
                 if (bee.getX() - hive.getX() > 0) {
                     move(bee, -1, 0);
                 } else {
@@ -136,28 +173,28 @@ public class Beediator {
         int randInt = rand.nextInt(4);
         switch (randInt + 1) {
             case 1: if (bee.getCurrent().isOpen(bee.getX(), bee.getY() + 1)) {
-                        move(bee, 0, 1);
-                    } else {
-                        randMove(bee);
-                    }
+                    move(bee, 0, 1);
+                } else {
+                    randMove(bee);
+                }
                     break;
             case 2: if (bee.getCurrent().isOpen(bee.getX() + 1, bee.getY())) {
-                        move(bee, 1, 0);
-                    } else {
-                        randMove(bee);
-                    }
+                    move(bee, 1, 0);
+                } else {
+                    randMove(bee);
+                }
                     break;
             case 3: if (bee.getCurrent().isOpen(bee.getX(), bee.getY() - 1)) {
-                        move(bee, 0, -1);
-                    } else {
-                        randMove(bee);
-                    }
+                    move(bee, 0, -1);
+                } else {
+                    randMove(bee);
+                }
                     break;
             case 4: if (bee.getCurrent().isOpen(bee.getX() - 1, bee.getY())) {
-                        move(bee, -1, 0);
-                    } else {
-                        randMove(bee);
-                    }
+                    move(bee, -1, 0);
+                } else {
+                    randMove(bee);
+                }
                     break;
             default:move(bee, 0, 0);
                     break; 
@@ -177,8 +214,8 @@ public class Beediator {
             if (bee.inHive()) {
                 randMove(bee);
             } else {
-                if (bee.getCurrent().hasHive(bee.getX(), bee.getY()) &&
-                    randInt < 50) {
+                if (bee.getCurrent().hasHive(bee.getX(), bee.getY()) 
+                        && randInt < 50) {
                     mapMove(bee, bee.getCurrent().getHive(bee.getX(),
                             bee.getY()).getMap());
                 } else {

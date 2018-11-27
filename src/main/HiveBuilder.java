@@ -3,215 +3,220 @@ package main;
 public abstract class HiveBuilder {
     
     public abstract void setWorkLeft();
+    
     public abstract void setCapacity();
+    
     public abstract void setBuilt();
+    
     public abstract void setFlower();
+    
     public abstract void setHive();
+    
     public abstract Room getRoom();
     
 }
 
 class UnbuiltRoom extends HiveBuilder {
 
-    private Room _room = new Room();
+    private Room room = new Room();
 
     @Override
     public void setWorkLeft() {
-        _room.setWorkLeft(100);
+        room.setWorkLeft(100);
        
     }
 
     @Override
     public void setCapacity() {
-        _room.setCapacity(0);
+        room.setCapacity(0);
         
     }
 
     @Override
     public void setBuilt() {
-        _room.setBuilt(false);
+        room.setBuilt(false);
         
     }
 
     @Override
     public void setFlower() {
-        _room.setFlower(false);
+        room.setFlower(false);
         
     }
 
     @Override
     public void setHive() {
-        _room.setHive(null);
+        room.setHive(null);
         
     }
 
     @Override
     public Room getRoom() {
-        return _room;
+        return room;
     }
     
 }
 
 class BuiltRoom extends HiveBuilder {
     
-    private Room _room = new Room();
+    private Room room = new Room();
 
     @Override
     public void setWorkLeft() {
-        _room.setWorkLeft(0);
+        room.setWorkLeft(0);
         
     }
 
     @Override
     public void setCapacity() {
-        _room.setCapacity(10);
+        room.setCapacity(10);
         
     }
 
     @Override
     public void setBuilt() {
-        _room.setBuilt(true);
+        room.setBuilt(true);
         
     }
 
     @Override
     public void setFlower() {
-        _room.setFlower(false);
+        room.setFlower(false);
         
     }
 
     @Override
     public void setHive() {
-        _room.setHive(null);
+        room.setHive(null);
         
     }
 
     @Override
     public Room getRoom() {
-        return _room;
+        return room;
     }
     
 }
 
 class FlowerRoom extends HiveBuilder {
     
-    private Room _room = new Room();
+    private Room room = new Room();
 
     @Override
     public void setWorkLeft() {
-        _room.setWorkLeft(0);
+        room.setWorkLeft(0);
         
     }
 
     @Override
     public void setCapacity() {
-        _room.setCapacity(10);
+        room.setCapacity(10);
         
     }
 
     @Override
     public void setBuilt() {
-       _room.setBuilt(true);
+        room.setBuilt(true);
         
     }
 
     @Override
     public void setFlower() {
-        _room.setFlower(true);
+        room.setFlower(true);
         
     }
 
     @Override
     public void setHive() {
-        _room.setHive(null);
+        room.setHive(null);
         
     }
 
     @Override
     public Room getRoom() {
-        return _room;
+        return room;
     }
     
 }
 
 class OverworldRoom extends HiveBuilder {
     
-    private Room _room = new Room();
+    private Room room = new Room();
 
     @Override
     public void setWorkLeft() {
-        _room.setWorkLeft(0);
+        room.setWorkLeft(0);
         
     }
 
     @Override
     public void setCapacity() {
-        _room.setCapacity(10);
+        room.setCapacity(10);
         
     }
 
     @Override
     public void setBuilt() {
-        _room.setBuilt(true);
+        room.setBuilt(true);
         
     }
 
     @Override
     public void setFlower() {
-        _room.setFlower(false);
+        room.setFlower(false);
         
     }
 
     @Override
     public void setHive() {
-        _room.setHive(null);
+        room.setHive(null);
         
     }
 
     @Override
     public Room getRoom() {
-        return _room;
+        return room;
     }
     
 }
 
 class HiveRoom extends HiveBuilder {
 
-    private Room _room = new Room();
+    private Room room = new Room();
     
     @Override
     public void setWorkLeft() {
-        _room.setWorkLeft(0);
+        room.setWorkLeft(0);
         
     }
 
     @Override
     public void setCapacity() {
-        _room.setCapacity(10);
+        room.setCapacity(10);
         
     }
 
     @Override
     public void setBuilt() {
-        _room.setBuilt(true);
+        room.setBuilt(true);
         
     }
 
     @Override
     public void setFlower() {
-        _room.setFlower(false);
+        room.setFlower(false);
         
     }
 
     @Override
     public void setHive() {
-        _room.setHive(null);
+        room.setHive(null);
         
     }
 
     @Override
     public Room getRoom() {
-        return _room;
+        return room;
     }
     
 }

@@ -1,6 +1,7 @@
 package main;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Bee {
 
@@ -8,20 +9,26 @@ public class Bee {
     private int id;
     private int health;
     private int energy;
+    private int maxEnergy;
     private ArrayList<Species> species;
     private JobStrategy job;
     private Type beeType;
     private Hive home;
     private Map current;
-    private int x;
+    private int xpos;
     private int overX;
-    private int y;
+    private int ypos;
     private int overY;
     private int eggAge;
     private boolean food;
     
     private static int number = 0;
     
+    /**
+     * Bee constructor, uses Type enum to determine attributes.
+     * @param hive home hive for the bee
+     * @param beeType job type for the bee
+     */
     public Bee(Hive hive, Type beeType) {
         id = ++number;
         home = hive;
@@ -31,34 +38,44 @@ public class Bee {
         overY = hive.getY();
         this.beeType = beeType;
         switch (beeType) {
-        case QUEEN: health = 200;
+            case QUEEN: health = 200;
                     energy = 100;
-                    x = 3;
-                    y = 3;
+                    maxEnergy = 100;
+                    xpos = 3;
+                    ypos = 3;
                     job = new QueenStrategy(Apiary.getMediator());
                     break;
-        case WARRIOR: health = 150;
-                    energy = 100;
-                    x = 0;
-                    y = 0;
+            case WARRIOR: health = 150;
+                    energy = 250;
+                    maxEnergy = 250;
+                    xpos = 0;
+                    ypos = 0;
                     job = new WarriorStrategy(Apiary.getMediator());
                     break;
-        case DRONE: health = 75;
+            case DRONE: health = 75;
                     energy = 100;
-                    x = 1;
-                    y = 1;
+                    maxEnergy = 100;
+                    xpos = 1;
+                    ypos = 1;
                     job = new DroneStrategy(Apiary.getMediator());
                     break;
-        case WORKER: health = 50;
+            case WORKER: health = 50;
                     energy = 100;
-                    x = 2;
-                    y = 2;
+                    maxEnergy = 100;
+                    xpos = 2;
+                    ypos = 2;
                     job = new WorkerStrategy(Apiary.getMediator());
                     break;
-        default:    health = 5;
+            default:    health = 5;
                     energy = 0;
-                    x = 3;
-                    y = 3;
+                    maxEnergy = 0;
+                    xpos = 3;
+                    ypos = 3;
+                if (species.contains(Species.BREEDER)) {
+                    eggAge = 8;
+                } else {
+                    eggAge = 12;
+                }
                     job = new EggStrategy(Apiary.getMediator());
                     this.beeType = Type.EGG;
                     break;
@@ -70,6 +87,13 @@ public class Bee {
         energy--;
     }
     
+    /**
+     * Method for checking for enemy bees by comparing
+     * the home hive attribute.
+     * @param bee another bee occupying the same space
+     * @return true if the other bee is part of the same
+     *     hive/faction
+     */
     public boolean teamCheck(Bee bee) {
         if (bee.getHive().equals(this.getHive())) {
             return true;
@@ -78,9 +102,17 @@ public class Bee {
         }
     }
     
+    /**
+     * Method for receiving damage based on an attack
+     * from the mediator, there is a boost to damage
+     * if the attacker is a TOUGH species. Also triggers
+     * death procedures
+     * @param damage amount of health taken away
+     * @param hive the home hive of the attacker
+     */
     public void takeHit(int damage, Hive hive) {
         if (species.contains(Species.TOUGH)) {
-            health -= damage + 10;
+            health -= damage - 10;
         } else {
             health -= damage;
         }
@@ -88,34 +120,67 @@ public class Bee {
             if (beeType.equals(Type.QUEEN)) {
                 home.queenDeath(hive);
             }
-            current.remove(x, y, this);
+            current.remove(xpos, ypos, this);
             home.removeBee(this);
             Apiary.deadBee(this);
+            System.out.println("Something died!");
         }
     }
     
+    /**
+     * Triggers a bee egg to grow every tick, and upon reaching
+     * zero, is given a new bee type for its further turns.
+     */
     public void grow() {
         eggAge--;
         if (eggAge == 0) {
-            //type selection
+            Random rand = new Random();
+            int randInt = rand.nextInt(3);
+            switch (randInt + 1) {
+                case 1: beeType = (Type.WARRIOR);
+                        energy = 250;
+                        maxEnergy = 250;
+                        job = 
+                            new WarriorStrategy(Apiary.getMediator());
+                        break;
+                case 2: beeType = (Type.DRONE);
+                        energy = 100;
+                        maxEnergy = 100;
+                        job = 
+                            new DroneStrategy(Apiary.getMediator());
+                        break;
+                default:beeType = (Type.WORKER);
+                        energy = 100;
+                        maxEnergy = 100;
+                        job = 
+                            new WorkerStrategy(Apiary.getMediator());
+                        break;
+            }
         }
     }
     
-    public void move(int mX, int mY) {
-        x = mX;
-        y = mY;
+    public void move(int xpos, int ypos) {
+        this.xpos = xpos;
+        this.ypos = ypos;
     }
     
-    public void moveMap(int mX, int mY, Map map) {
-        overX = x;
-        x = mX;
-        overY = y;
-        y = mY;
+    /**
+     * Simple move function for switching between hive maps
+     * and the overworld map.
+     * @param xpos x position the bee will be moving to
+     * @param ypos y position the bee will be moving to
+     * @param map the new map object the bee is moving to
+     */
+    public void moveMap(int xpos, int ypos, Map map) {
+        overX = this.xpos;
+        this.xpos = xpos;
+        overY = this.ypos;
+        this.ypos = ypos;
         current = map;
     }
     
-    public void setEnergy(int mEnergy) {
-        energy = mEnergy;
+    public void setEnergy(int energy) {
+        this.energy = energy;
     }
     
     public Hive getHive() {
@@ -130,6 +195,11 @@ public class Bee {
         food = true;
     }
     
+    /**
+     * When a drone carrying food reaches the hive,
+     * it will increase the food amount for the whole
+     * hive, with a boost if it is a DEXTROUS species.
+     */
     public void deliverFood() {
         if (species.contains(Species.DEXTROUS)) {
             home.addFood(2);
@@ -141,9 +211,14 @@ public class Bee {
     
     public void eatFood() {
         home.decFood();
-        setEnergy(100);
+        setEnergy(maxEnergy);
     }
     
+    /**
+     * Method for checking if a bee is at home as opposed to
+     * the overworld map.
+     * @return true is the bee is in its home hive, false otherwise
+     */
     public boolean inHive() {
         if (home.getMap().equals(current)) {
             return true;
@@ -165,7 +240,7 @@ public class Bee {
     }
     
     public int getX() {
-        return x;
+        return xpos;
     }
     
     public int getOverX() {
@@ -173,7 +248,7 @@ public class Bee {
     }
     
     public int getY() {
-        return y;
+        return ypos;
     }
     
     public int getOverY() {
@@ -184,7 +259,7 @@ public class Bee {
         return current;
     }
     
-    public int getID() {
+    public int getId() {
         return id;
     }
     

@@ -21,6 +21,11 @@ public class Apiary {
         apiaryMap = new Map(height, width);
     }
     
+    /**
+     * Singleton creational design pattern intended to prevent
+     * more than one Apiary object from being created.
+     * @return Apiary instance
+     */
     public static Apiary getApiary() {
         if (instance == null) {
             instance = new Apiary();
@@ -28,6 +33,11 @@ public class Apiary {
         return instance;
     }
     
+    /**
+     * Cycles through every bee and activates their turn, 
+     * updates the bee data structure and prints the
+     * overworld map.
+     */
     public void buzz() {
         for (Bee bee : bees) {
             bee.takeTurn();
@@ -37,6 +47,11 @@ public class Apiary {
         
     }
     
+    /**
+     * Updates the main bees ArrayList by adding in new
+     * bee entries from the update ArrayList and removes
+     * dead bees using the delete ArrayList.
+     */
     public void updateBees() {
         for (Bee bee : delete) {
             removeBee(bee);
@@ -44,16 +59,17 @@ public class Apiary {
         for (Bee bee : update) {
             addBee(bee);
         }
+        bees.trimToSize();
+        delete.clear();
+        update.clear();
     }
     
     public static Map getApiaryMap() {
         return apiaryMap;
     }
     
-    
-    
     public static String printMap() {
-        return (apiaryMap.mapToString());
+        return (apiaryMap.toString());
     }
     
     public static Beediator getMediator() {

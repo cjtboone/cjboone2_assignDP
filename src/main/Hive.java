@@ -1,6 +1,7 @@
 package main;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Hive {
 
@@ -9,31 +10,63 @@ public class Hive {
     private ArrayList<Species> species;
     private ArrayList<Bee> bees;
     private Map hiveMap;
-    private int x;
-    private int y;
+    private int xpos;
+    private int ypos;
     private int popcap;
+    private boolean alive;
     
     private static int number = 0;
     
+    /**
+     * Basic constructor for Hive object, simply initializes
+     * the ArrayLists for bees and the bee species.
+     */
     public Hive() {
         bees = new ArrayList<>();
         species = new ArrayList<>();
+        alive = true;
         
     }
     
-    public Hive(int x, int y) {
-        this.x = x;
-        this.y = y;
+    /**
+     * Utility constructor for Warrior bees, allows the creation
+     * of a Hive with unique coordinates to direct the bee.
+     * @param xpos x coordinate of destination
+     * @param ypos y coordinate of destination
+     */
+    public Hive(int xpos, int ypos) {
+        this.xpos = xpos;
+        this.ypos = ypos;
         this.faction = 0;
     }
     
-    public void hiveInit(int x, int y) {
-        this.x = x;
-        this.y = y;
+    /**
+     * Initializer for Hive separate from constructor, initializes
+     * some attributes and creates the initial bees for the hive.
+     * @param xpos x coordinate of hive on overworld map
+     * @param ypos y coordinate of hive on overworld map
+     */
+    public void hiveInit(int xpos, int ypos) {
+        this.xpos = xpos;
+        this.ypos = ypos;
         this.food = 50;
         this.hiveMap = new Map();
         this.faction = ++number;
         this.popcap = 160;
+        
+        Random rand = new Random();
+        int randInt = rand.nextInt(4);
+        switch (randInt + 1) {
+            case 1: species.add(Species.BREEDER);
+                    break;
+            case 2: species.add(Species.DEXTROUS);
+                    break;
+            case 3: species.add(Species.TOUGH);
+                    break;
+            case 4: species.add(Species.KILLER);
+                    break;
+            default:break;
+        }
         
         Bee queenB = new Bee(this, Type.QUEEN);
         addBee(queenB);
@@ -67,10 +100,17 @@ public class Hive {
         return species;
     }
     
+    /**
+     * Method for handling death of hive Queen, transfers
+     * all hive bees over to conquering hive.
+     * @param hive conquering hive
+     */
     public void queenDeath(Hive hive) {
         for (Bee bee : bees) {
             bee.setHive(hive);
+            alive = false;
         }
+        System.out.println("A Queen died!");
     }
     
     public void addFood(int amount) {
@@ -78,7 +118,7 @@ public class Hive {
     }
     
     public void decFood() {
-        food--;
+        food -= 3;
     }
     
     public int getFood() {
@@ -114,22 +154,31 @@ public class Hive {
     }
     
     public int getX() {
-        return x;
+        return xpos;
     }
     
-    public void setX(int x) {
-        this.x = x;
+    public void setX(int xpos) {
+        this.xpos = xpos;
     }
     
     public int getY() {
-        return y;
+        return ypos;
     }
     
-    public void setY(int y) {
-        this.y = y;
+    public void setY(int ypos) {
+        this.ypos = ypos;
     }
     
     public int getFaction() {
         return faction;
+    }
+    
+    public boolean getAlive() {
+        return alive;
+    }
+    
+    public String toString() {
+        return ("Faction " + faction + "\n" 
+                + "Alive: " + bees.size());
     }
 }

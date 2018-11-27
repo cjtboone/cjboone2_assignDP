@@ -7,7 +7,5 @@ public enum Species {
     TOUGH
     ;
     
-    //stats
-    
 }
 

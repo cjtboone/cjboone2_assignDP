@@ -15,6 +15,11 @@ public class Room {
         inside = new ArrayList<>();
     }
     
+    /**
+     * Room copy constructor to create unique instances of
+     * builder design pattern rooms.
+     * @param room room template from builder pattern
+     */
     public Room(Room room) {
         this.inside = new ArrayList<>();
         this.workLeft = room.getWorkLeft();
@@ -32,6 +37,12 @@ public class Room {
         inside.remove(bee);
     }
     
+    /**
+     * Build method for worker bees, decreases the amount
+     * of work left before a room is built -- increases
+     * hive population cap upon completion.
+     * @param hive the hive that the room is a part of
+     */
     public void build(Hive hive) {
         workLeft--;
         if (workLeft <= 0) {

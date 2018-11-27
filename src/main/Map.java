@@ -11,14 +11,22 @@ public class Map {
     private int height;
     private int width;
     
-    public Map(int x, int y) {
-        height = x;
-        width = y;
-        rooms = new Room[x][y];
+    /**
+     * Map constructor.
+     * @param height height of new map
+     * @param width width of new map
+     */
+    public Map(int height, int width) {
+        this.height = height;
+        this.width = width;
+        rooms = new Room[height][width];
         hives = new ArrayList<>();
         this.overworldInit();
     }
     
+    /**
+     * Map constructor for hive maps with preset dimensions.
+     */
     public Map() {
         rooms = new Room[25][25];
         height = 25;
@@ -27,6 +35,11 @@ public class Map {
         this.hivemapInit();
     }
     
+    /**
+     * Builder Design pattern director for creating different
+     * room types, sets main attributes.
+     * @param builder HiveBuilder object
+     */
     public void makeRoom(HiveBuilder builder) {
         builder.setWorkLeft();
         builder.setCapacity();
@@ -95,8 +108,15 @@ public class Map {
         return rooms[x][y];
     }
     
-    public boolean hasEnemy(int x, int y, Bee bee) {
-        for (Bee bee2 : rooms[x][y].getInside()) {
+    /**
+     * Method checking if a space has an enemy bee.
+     * @param xpos current x coordinate position
+     * @param ypos current y coordinate position
+     * @param bee potential attacking bee for hive comparison
+     * @return true if an enemy bee is occupying the same space
+     */
+    public boolean hasEnemy(int xpos, int ypos, Bee bee) {
+        for (Bee bee2 : rooms[xpos][ypos].getInside()) {
             if (!bee.teamCheck(bee2)) {
                 return true;
             }
@@ -104,14 +124,16 @@ public class Map {
         return false;
     }
     
-    /**
-     * @param x
-     * @param y
-     * @param bee
-     * @return
+    /**Method for getting reference to enemy bee,
+     * retrieves the first enemy Bee occupying the
+     * same space.
+     * @param xpos current x coordinate position
+     * @param ypos current y coordinate position
+     * @param bee attacking bee using for hive comparsion
+     * @return reference to enemy Bee
      */
-    public Bee getEnemy(int x, int y, Bee bee) {
-        for (Bee bee2 : rooms[x][y].getInside()) {
+    public Bee getEnemy(int xpos, int ypos, Bee bee) {
+        for (Bee bee2 : rooms[xpos][ypos].getInside()) {
             if (!bee.teamCheck(bee2)) {
                 return bee2;
             }
@@ -127,12 +149,6 @@ public class Map {
         rooms[x][y].remove(bee);
     }
     
-    public void addHive(int x, int y) {
-        if (!hiveMap) {
-            rooms[x][y] = new Room();
-        }
-    }
-    
     public boolean hasHive(int x, int y) {
         return rooms[x][y].hasHive();
     }
@@ -145,23 +161,39 @@ public class Map {
         return hives;
     }
     
-    public boolean isOpen(int x, int y) {
-        if (x >= 0 && x < rooms.length && y >= 0 && y < rooms[0].length) {
-            return (rooms[x][y].isBuilt());
+    /**
+     * Method checking if a potential room has valid coordinates and is built.
+     * @param xpos x coordinate of room to be checked
+     * @param ypos y coordinate of room to be checked
+     * @return true if valid room to move to
+     */
+    public boolean isOpen(int xpos, int ypos) {
+        if (xpos >= 0 && xpos < rooms.length && ypos >= 0 && ypos < rooms[0].length) {
+            return (rooms[xpos][ypos].isBuilt());
         } else {
             return false;
         }
     }
 
-    public boolean isUnbuilt(int x, int y) {
-        if (x >= 0 && x < rooms.length && y >= 0 && y < rooms[0].length) {
-            return (rooms[x][y].isBuilt() == false);
+    /**
+     * Method checking if a potential room has valid coordinates but is not built.
+     * @param xpos x coordinate of room to be checked
+     * @param ypos y coordinate of room to be checked
+     * @return true if valid room but not built
+     */
+    public boolean isUnbuilt(int xpos, int ypos) {
+        if (xpos >= 0 && xpos < rooms.length && ypos >= 0 && ypos < rooms[0].length) {
+            return (rooms[xpos][ypos].isBuilt() == false);
         } else {
             return false;
         }
     }
     
-    public String mapToString() {
+    /**
+     * toString method for Map, converts rooms to certain symbols on a grid to
+     * create a primitive ASCII map.
+     */
+    public String toString() {
         String output = "";
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
@@ -182,7 +214,7 @@ public class Map {
             }
             output += "\n";
         }
-    return output;
+        return output;
     }
     
 }
