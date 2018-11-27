@@ -1,16 +1,13 @@
 package main;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 public class Beediator {
 
-    private ArrayList<Bee> bees;
-    
     public void buildRoom(Bee bee) {
         if (energyCheck(bee)) {
-            if (bee.getCurrent().hasUnbuilt(bee.getX(), bee.getY())) {
-                
+            if (bee.getCurrent().isUnbuilt(bee.getX() + 1, bee.getY())) {
+                bee.getCurrent().getRoom(bee.getX(), bee.getY()).build();
             } else {
                 randMove(bee);
             }
@@ -24,6 +21,8 @@ public class Beediator {
             if (bee.hasFood()) {
                 if (bee.inHive()) {
                     bee.deliverFood();
+                    System.out.println(bee.getType() + " " + bee.getID() +
+                            "delivered food!");
                 } else {
                     moveTowards(bee, bee.getHive());
                 }
@@ -41,10 +40,6 @@ public class Beediator {
         } else {
             getRest(bee);
         }
-    }
-    
-    public void kill(Bee bee) {
-        bees.remove(bee);
     }
     
     public void fightEnemy(Bee bee) {
@@ -68,8 +63,12 @@ public class Beediator {
     
     public void layEgg(Bee bee) {
         if (!bee.getCurrent().isFull(bee.getX(),bee.getY())) {
-            bee.getCurrent().add(bee.getX(), bee.getY(), 
-                    new Bee(bee.getHive(), Type.EGG));
+            Bee egg = new Bee(bee.getHive(), Type.EGG);
+            bee.getCurrent().add(bee.getX(), bee.getY(), egg);
+            bee.getHive().addBee(egg);
+            Apiary.newBee(egg);
+            System.out.println(bee.getType().toString() + " " + bee.getID() +
+                    " of Hive " + bee.getHive().getFaction() + " laid an egg!");
         } else {
             //message space
         }

@@ -64,7 +64,7 @@ class BuiltRoom extends HiveBuilder {
 
     @Override
     public void setCapacity() {
-        _room.setCapacity(20);
+        _room.setCapacity(40);
         
     }
 
@@ -105,7 +105,7 @@ class FlowerRoom extends HiveBuilder {
 
     @Override
     public void setCapacity() {
-        _room.setCapacity(40);
+        _room.setCapacity(20);
         
     }
 
@@ -146,7 +146,7 @@ class OverworldRoom extends HiveBuilder {
 
     @Override
     public void setCapacity() {
-        _room.setWorkLeft(40);
+        _room.setCapacity(40);
         
     }
 
@@ -177,7 +177,7 @@ class OverworldRoom extends HiveBuilder {
 
 class HiveRoom extends HiveBuilder {
 
-    private Room _room;
+    private Room _room = new Room();
     
     @Override
     public void setWorkLeft() {
@@ -205,7 +205,7 @@ class HiveRoom extends HiveBuilder {
 
     @Override
     public void setHive() {
-        _room.setHive(new Hive());
+        _room.setHive(null);
         
     }
 

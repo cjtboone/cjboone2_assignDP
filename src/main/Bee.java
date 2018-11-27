@@ -4,10 +4,13 @@ import java.util.ArrayList;
 
 public class Bee {
 
+    
+    private int id;
     private int health;
     private int energy;
     private ArrayList<Species> species;
     private JobStrategy job;
+    private Type beeType;
     private Hive home;
     private Map current;
     private int x;
@@ -17,59 +20,54 @@ public class Bee {
     private int eggAge;
     private boolean food;
     
-    public Bee(Hive hive) {
-        eggAge = 10;
-        health = 5;
-        energy = 0;
-        species = home.getSpecies();
-        home = hive;
-        current = home.getMap();
-        overX = hive.getX();
-        overY = hive.getY();
-    }
+    private static int number = 0;
     
     public Bee(Hive hive, Type beeType) {
+        id = ++number;
         home = hive;
         current = home.getMap();
         species = home.getSpecies();
         overX = hive.getX();
         overY = hive.getY();
+        this.beeType = beeType;
         switch (beeType) {
         case QUEEN: health = 200;
                     energy = 100;
                     x = 3;
                     y = 3;
-                    job = new QueenStrategy();
+                    job = new QueenStrategy(Apiary.getMediator());
                     break;
         case WARRIOR: health = 150;
                     energy = 100;
                     x = 0;
                     y = 0;
-                    job = new WarriorStrategy();
+                    job = new WarriorStrategy(Apiary.getMediator());
                     break;
         case DRONE: health = 75;
                     energy = 100;
                     x = 1;
                     y = 1;
-                    job = new DroneStrategy();
+                    job = new DroneStrategy(Apiary.getMediator());
                     break;
         case WORKER: health = 50;
                     energy = 100;
                     x = 2;
                     y = 2;
-                    job = new WorkerStrategy();
+                    job = new WorkerStrategy(Apiary.getMediator());
                     break;
         default:    health = 5;
                     energy = 0;
                     x = 3;
                     y = 3;
-                    job = new EggStrategy();
+                    job = new EggStrategy(Apiary.getMediator());
+                    this.beeType = Type.EGG;
                     break;
         }
     }
     
     public void takeTurn() {
         job.doJob(this);
+        energy--;
     }
     
     public boolean teamCheck(Bee bee) {
@@ -87,7 +85,8 @@ public class Bee {
             health -= damage;
         }
         if (health <= 0) {
-            
+            current.remove(x, y, this);
+            home.removeBee(this);
         }
     }
     
@@ -101,7 +100,6 @@ public class Bee {
     public void move(int mX, int mY) {
         x = mX;
         y = mY;
-        energy--;
     }
     
     public void moveMap(int mX, int mY, Map map) {
@@ -110,7 +108,6 @@ public class Bee {
         overY = y;
         y = mY;
         current = map;
-        energy--;
     }
     
     public void setEnergy(int mEnergy) {
@@ -130,7 +127,11 @@ public class Bee {
     }
     
     public void deliverFood() {
-        home.addFood(1);
+        if (species.contains(Species.DEXTROUS)) {
+            home.addFood(2);
+        } else {
+            home.addFood(1);
+        }
         food = false;
     }
     
@@ -173,6 +174,14 @@ public class Bee {
     
     public Map getCurrent() {
         return current;
+    }
+    
+    public int getID() {
+        return id;
+    }
+    
+    public Type getType() {
+        return beeType;
     }
     
     public ArrayList<Species> getSpecies() {

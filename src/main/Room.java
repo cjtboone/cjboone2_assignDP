@@ -15,6 +15,15 @@ public class Room {
         inside = new ArrayList<>();
     }
     
+    public Room(Room room) {
+        this.inside = new ArrayList<>();
+        this.workLeft = room.getWorkLeft();
+        this.capacity = room.getCapacity();
+        this.built = room.isBuilt();
+        this.isFlower = room.getFlower();
+        this.hive = room.getHive();
+    }
+    
     public void add(Bee bee) {
         inside.add(bee);
     }
@@ -35,7 +44,7 @@ public class Room {
     }
     
     public boolean isFull() {
-        return (inside.size() <= capacity);
+        return (inside.size() >= capacity);
     }
     
     public ArrayList<Bee> getInside() {
@@ -54,8 +63,16 @@ public class Room {
         return hive;
     }
     
+    public int getWorkLeft() {
+        return workLeft;
+    }
+    
     public void setWorkLeft(int work) {
         workLeft = work;
+    }
+    
+    public int getCapacity() {
+        return capacity;
     }
     
     public void setCapacity(int cap) {
@@ -72,6 +89,10 @@ public class Room {
     
     public void setHive(Hive hive) {
         this.hive = hive;
+    }
+    
+    public boolean hasBees() {
+        return inside.size() > 0;
     }
     
 }

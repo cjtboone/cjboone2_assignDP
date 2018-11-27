@@ -1,19 +1,22 @@
 package main;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Map {
     
     private Room[][] rooms;
+    private ArrayList<Hive> hives;
     private boolean hiveMap;
     
     public Map(int x, int y) {
         rooms = new Room[x][y];
+        hives = new ArrayList<>();
         this.overworldInit();
     }
     
     public Map() {
-        rooms = new Room[20][20];
+        rooms = new Room[25][25];
         hiveMap = true;
         this.hivemapInit();
     }
@@ -39,10 +42,10 @@ public class Map {
         for (int i = 0; i < rooms.length; i++) {
             for (int j = 0; j < rooms[i].length; j++) {
                 int randInt = rand.nextInt(100);
-                if (randInt < 25) {
-                    rooms[i][j] = frb.getRoom();
+                if (randInt < 13) {
+                    rooms[i][j] = new Room(frb.getRoom());
                 } else {
-                    rooms[i][j] = owrb.getRoom();
+                    rooms[i][j] = new Room(owrb.getRoom());
                 }
             }
         }
@@ -50,8 +53,10 @@ public class Map {
         for (int k = 0; k < 4; k++) {
             int randi = rand.nextInt(rooms.length);
             int randi2 = rand.nextInt(rooms[0].length);
-            rooms[randi][randi2] = hrb.getRoom();
+            rooms[randi][randi2] = new Room(hrb.getRoom());
+            rooms[randi][randi2].setHive(new Hive());
             rooms[randi][randi2].getHive().hiveInit(randi, randi2);
+            hives.add(rooms[randi][randi2].getHive());
         }
         
     }
@@ -62,15 +67,15 @@ public class Map {
         makeRoom(ubrb);
         makeRoom(brb);
         
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
-                rooms[i][j] = brb.getRoom();
+        for (int i2 = 0; i2 < rooms.length; i2++) {
+            for (int j2 = 0; j2 < rooms[i2].length; j2++) {
+                rooms[i2][j2] = new Room(ubrb.getRoom());
             }
         }
         
-        for (int i2 = 4; i2 < rooms.length; i2++) {
-            for (int j2 = 4; j2 < rooms[i2].length; j2++) {
-                rooms[i2][j2] = ubrb.getRoom();
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                rooms[i][j] = new Room(brb.getRoom());
             }
         }
         
@@ -105,6 +110,12 @@ public class Map {
         return false;
     }
     
+    /**
+     * @param x
+     * @param y
+     * @param bee
+     * @return
+     */
     public Bee getEnemy(int x, int y, Bee bee) {
         for (Bee bee2 : rooms[x][y].getInside()) {
             if (!bee.teamCheck(bee2)) {
@@ -136,6 +147,10 @@ public class Map {
         return rooms[x][y].getHive();
     }
     
+    public ArrayList<Hive> getHives() {
+        return hives;
+    }
+    
     public boolean isOpen(int x, int y) {
         if (x >= 0 && x < rooms.length && y >= 0 && y < rooms[0].length) {
             return (rooms[x][y].isBuilt() && !rooms[x][y].isFull());
@@ -144,6 +159,12 @@ public class Map {
         }
     }
 
-    
+    public boolean isUnbuilt(int x, int y) {
+        if (x >= 0 && x < rooms.length && y >= 0 && y < rooms[0].length) {
+            return (!rooms[x][y].isBuilt());
+        } else {
+            return false;
+        }
+    }
     
 }
