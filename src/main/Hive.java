@@ -51,7 +51,7 @@ public class Hive {
         this.ypos = ypos;
         this.food = 50;
         this.hiveMap = new Map();
-        this.faction = ++number;
+        this.faction = incFaction();
         this.popcap = 160;
         
         Random rand = new Random();
@@ -180,5 +180,9 @@ public class Hive {
     public String toString() {
         return ("Faction " + faction + "\n" 
                 + "Alive: " + bees.size());
+    }
+    
+    public static int incFaction() {
+        return ++number;
     }
 }

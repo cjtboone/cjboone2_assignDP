@@ -7,7 +7,6 @@ public class Map {
     
     private Room[][] rooms;
     private ArrayList<Hive> hives;
-    private boolean hiveMap;
     private int height;
     private int width;
     
@@ -31,7 +30,6 @@ public class Map {
         rooms = new Room[25][25];
         height = 25;
         width = 25;
-        hiveMap = true;
         this.hivemapInit();
     }
     
@@ -46,7 +44,6 @@ public class Map {
         builder.setBuilt();
         builder.setFlower();
         builder.setHive();
-        builder.getRoom();
     }
     
     private void overworldInit() {
@@ -194,26 +191,27 @@ public class Map {
      * create a primitive ASCII map.
      */
     public String toString() {
-        String output = "";
+        StringBuffer buf = new StringBuffer();
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 Room room = this.getRoom(i, j);
                 if (room.hasBees()) {
-                    output += "B ";
+                    buf.append("B ");
                 } else {
                     if (room.getFlower()) {
-                        output += "% ";
+                        buf.append("% ");
                     } else {
                         if (room.hasHive()) {
-                            output += "& ";
+                            buf.append("& ");
                         } else {
-                            output += "_ ";
+                            buf.append("_ ");
                         }
                     }
                 } 
             }
-            output += "\n";
+            buf.append("\n");
         }
+        String output = buf.toString();
         return output;
     }
     

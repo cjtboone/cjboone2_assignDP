@@ -30,7 +30,7 @@ public class Bee {
      * @param beeType job type for the bee
      */
     public Bee(Hive hive, Type beeType) {
-        id = ++number;
+        id = incNumber();
         home = hive;
         current = home.getMap();
         species = home.getSpecies();
@@ -269,5 +269,9 @@ public class Bee {
     
     public ArrayList<Species> getSpecies() {
         return species;
+    }
+    
+    public static int incNumber() {
+        return ++number;
     }
 }

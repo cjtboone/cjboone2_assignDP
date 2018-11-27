@@ -14,11 +14,7 @@ public class Apiary {
     private static int width;
     
     private Apiary() {
-        beediator = new Beediator();
-        bees = new ArrayList<>();
-        update = new ArrayList<>();
-        delete = new ArrayList<>();
-        apiaryMap = new Map(height, width);
+        
     }
     
     /**
@@ -29,6 +25,11 @@ public class Apiary {
     public static Apiary getApiary() {
         if (instance == null) {
             instance = new Apiary();
+            beediator = new Beediator();
+            bees = new ArrayList<>();
+            update = new ArrayList<>();
+            delete = new ArrayList<>();
+            apiaryMap = new Map(height, width);
         }
         return instance;
     }
@@ -43,8 +44,6 @@ public class Apiary {
             bee.takeTurn();
         }
         updateBees();
-        printMap();
-        
     }
     
     /**

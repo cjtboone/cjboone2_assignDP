@@ -7,12 +7,13 @@ import javax.swing.JTextPane;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 
-public class Main {
+public final class Main {
 
-    public static JTextPane display;
-    public static JFrame frame;
-    public static int livingQueens;
-    public static int fedHives;
+    private static JTextPane display;
+    private static JFrame frame;
+    private static int livingQueens;
+    private static int fedHives;
+    private static int ticks;
     
     /**
      * Main method for running bee simulation, displays ASCII
@@ -40,12 +41,14 @@ public class Main {
         apiary = Apiary.getApiary();
         livingQueens();
         fedHives();
+        ticks = 1000;
         
-        while (livingQueens > 1 && fedHives > 0) {
+        while (livingQueens > 1 && fedHives > 0 && ticks > 0) {
             display.setText(Apiary.printMap());
             apiary.buzz();
             livingQueens();
             fedHives();
+            ticks--;
         }
         
     }
