@@ -13,7 +13,11 @@ public class Room {
     }
     
     public void add(Bee bee) {
-        
+        inside.add(bee);
+    }
+    
+    public void remove(Bee bee) {
+        inside.remove(bee);
     }
     
 }

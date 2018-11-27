@@ -13,6 +13,7 @@ public class Bee {
     private int x;
     private int y;
     private int eggAge;
+    private boolean food;
     
     public Bee(Hive hive) {
         eggAge = 10;
@@ -57,7 +58,16 @@ public class Bee {
     }
     
     public void move(int mX, int mY) {
-        
+        x = mX;
+        y = mY;
+        energy--;
+    }
+    
+    public void moveMap(int mX, int mY, Map map) {
+        x = mX;
+        y = mY;
+        current = map;
+        energy--;
     }
     
     public void giveEnergy(int calories) {
@@ -66,5 +76,26 @@ public class Bee {
     
     public Hive getHive() {
         return home;
+    }
+    
+    public boolean hasFood() {
+        return food;
+    }
+    
+    public void giveFood() {
+        food = true;
+    }
+    
+    public void deliverFood() {
+        home.addFood(1);
+        food = false;
+    }
+    
+    public boolean inHive() {
+        if (home.getMap().equals(current)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

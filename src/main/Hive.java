@@ -8,7 +8,7 @@ public class Hive {
     private int food;
     private ArrayList<Species> species;
     private Room[][] rooms;
-    private Bee[] bees;
+    private ArrayList<Bee> bees;
     private Map hiveMap;
     
     public int getFood() {
@@ -24,4 +24,11 @@ public class Hive {
         return species;
     }
     
+    public void addFood(int amount) {
+        food += amount;
+    }
+    
+    public Map getMap() {
+        return hiveMap;
+    }
 }
