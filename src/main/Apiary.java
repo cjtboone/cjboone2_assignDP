@@ -7,7 +7,7 @@ public class Apiary {
     private static Apiary instance;
     private Hive[][] hives;
     private ArrayList<Bee> bees;
-    private Map apiaryMap;
+    private static Map apiaryMap;
     
     private Apiary() {
         
@@ -28,6 +28,10 @@ public class Apiary {
         for (Bee bee : bees) {
             bee.takeTurn();
         }
+    }
+    
+    public static Map getApiaryMap() {
+        return apiaryMap;
     }
     
 }

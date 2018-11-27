@@ -45,4 +45,25 @@ public class Map {
     public void add(int x, int y, Bee bee) {
         rooms[x][y].add(bee);
     }
+    
+    public void remove(int x, int y, Bee bee) {
+        rooms[x][y].remove(bee);
+    }
+    
+    public boolean hasHive(int x, int y) {
+        return rooms[x][y].hasHive();
+    }
+    
+    public Hive getHive(int x, int y) {
+        return rooms[x][y].getHive();
+    }
+    
+    public boolean isOpen(int x, int y) {
+        if (x >= 0 && x < rooms.length && y >= 0 && y < rooms[0].length) {
+            return (rooms[x][y].isBuilt() && !rooms[x][y].isFull());
+        } else {
+            return false;
+        }
+    }
+    
 }

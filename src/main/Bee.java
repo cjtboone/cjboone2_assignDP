@@ -11,7 +11,9 @@ public class Bee {
     private Hive home;
     private Map current;
     private int x;
+    private int overX;
     private int y;
+    private int overY;
     private int eggAge;
     private boolean food;
     
@@ -58,7 +60,9 @@ public class Bee {
     }
     
     public void moveMap(int mX, int mY, Map map) {
+        overX = x;
         x = mX;
+        overY = y;
         y = mY;
         current = map;
         energy--;
@@ -110,8 +114,16 @@ public class Bee {
         return x;
     }
     
+    public int getOverX() {
+        return overX;
+    }
+    
     public int getY() {
         return y;
+    }
+    
+    public int getOverY() {
+        return overY;
     }
     
     public Map getCurrent() {

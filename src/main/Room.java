@@ -9,6 +9,7 @@ public class Room {
     private int capacity;
     private boolean built;
     private boolean isFlower;
+    private Hive hive;
 
     public Room() {
         inside = new ArrayList<>();
@@ -52,6 +53,14 @@ public class Room {
     
     public boolean isBuilt() {
         return built;
+    }
+    
+    public boolean hasHive() {
+        return hive != null;
+    }
+    
+    public Hive getHive() {
+        return hive;
     }
     
 }
