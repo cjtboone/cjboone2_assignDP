@@ -13,15 +13,6 @@ public class Room {
 
     public Room() {
         inside = new ArrayList<>();
-        built = false;
-        workLeft = 100;
-    }
-    
-    public Room(boolean mFlower) {
-        inside = new ArrayList<>();
-        built = true;
-        workLeft = 0;
-        isFlower = mFlower;
     }
     
     public void add(Bee bee) {
@@ -61,6 +52,26 @@ public class Room {
     
     public Hive getHive() {
         return hive;
+    }
+    
+    public void setWorkLeft(int work) {
+        workLeft = work;
+    }
+    
+    public void setCapacity(int cap) {
+        capacity = cap;
+    }
+    
+    public void setBuilt(boolean built) {
+        this.built = built;
+    }
+    
+    public void setFlower(boolean isFlower) {
+        this.isFlower = isFlower;
+    }
+    
+    public void setHive(Hive hive) {
+        this.hive = hive;
     }
     
 }

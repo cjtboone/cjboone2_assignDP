@@ -19,10 +19,6 @@ public class Beediator {
         }
     }
     
-    public void constructRoom(HiveBuilder builder) {
-        
-    }
-    
     public void findFood(Bee bee) {
         if (energyCheck(bee)) {
             if (bee.hasFood()) {
@@ -73,7 +69,7 @@ public class Beediator {
     public void layEgg(Bee bee) {
         if (!bee.getCurrent().isFull(bee.getX(),bee.getY())) {
             bee.getCurrent().add(bee.getX(), bee.getY(), 
-                    new Bee(bee.getHive()));
+                    new Bee(bee.getHive(), Type.EGG));
         } else {
             //message space
         }

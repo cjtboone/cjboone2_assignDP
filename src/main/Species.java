@@ -2,8 +2,8 @@ package main;
 
 public enum Species {
     KILLER, 
-    WORKER, 
-    OTHER,
+    DEXTROUS, 
+    BREEDER,
     TOUGH
     ;
     

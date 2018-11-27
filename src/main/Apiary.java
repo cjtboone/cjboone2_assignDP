@@ -5,11 +5,13 @@ import java.util.ArrayList;
 public class Apiary {
 
     private static Apiary instance;
-    private Hive[][] hives;
-    private ArrayList<Bee> bees;
+    private static ArrayList<Bee> bees;
     private static Map apiaryMap;
     
     private Apiary() {
+        
+        apiaryMap = new Map(20, 20);
+        
         
     }
     
@@ -20,10 +22,6 @@ public class Apiary {
         return instance;
     }
     
-    public void Construct(HiveBuilder builder) {
-        
-    }
-    
     public void buzz() {
         for (Bee bee : bees) {
             bee.takeTurn();
@@ -32,6 +30,10 @@ public class Apiary {
     
     public static Map getApiaryMap() {
         return apiaryMap;
+    }
+    
+    public static String mapToString() {
+        return null;
     }
     
 }

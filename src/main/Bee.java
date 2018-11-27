@@ -19,8 +19,53 @@ public class Bee {
     
     public Bee(Hive hive) {
         eggAge = 10;
-        home = hive;
+        health = 5;
+        energy = 0;
         species = home.getSpecies();
+        home = hive;
+        current = home.getMap();
+        overX = hive.getX();
+        overY = hive.getY();
+    }
+    
+    public Bee(Hive hive, Type beeType) {
+        home = hive;
+        current = home.getMap();
+        species = home.getSpecies();
+        overX = hive.getX();
+        overY = hive.getY();
+        switch (beeType) {
+        case QUEEN: health = 200;
+                    energy = 100;
+                    x = 3;
+                    y = 3;
+                    job = new QueenStrategy();
+                    break;
+        case WARRIOR: health = 150;
+                    energy = 100;
+                    x = 0;
+                    y = 0;
+                    job = new WarriorStrategy();
+                    break;
+        case DRONE: health = 75;
+                    energy = 100;
+                    x = 1;
+                    y = 1;
+                    job = new DroneStrategy();
+                    break;
+        case WORKER: health = 50;
+                    energy = 100;
+                    x = 2;
+                    y = 2;
+                    job = new WorkerStrategy();
+                    break;
+        default:    health = 5;
+                    energy = 0;
+                    x = 3;
+                    y = 3;
+                    job = new EggStrategy();
+                    break;
+        }
     }
     
     public void takeTurn() {
