@@ -1,5 +1,7 @@
 package main;
 
+import java.awt.FlowLayout;
+
 import javax.swing.JFrame;
 import javax.swing.JTextPane;
 import javax.swing.text.SimpleAttributeSet;
@@ -20,15 +22,18 @@ public class Main {
         StyleConstants.setAlignment(attribs , StyleConstants.ALIGN_JUSTIFIED);
         display.setParagraphAttributes(attribs,true);
         
+        frame.setLayout(new FlowLayout());
         frame.add(display);
-        frame.setSize(1000,1000);
+        frame.setSize(1100,940);
         frame.setVisible(true);
         
         Apiary apiary;
         Apiary.setMapSize(50, 75);
         apiary = Apiary.getApiary();
-        display.setText(Apiary.mapToString());
-        apiary.buzz();
+        while (true) {
+            display.setText(Apiary.printMap());
+            apiary.buzz();
+        }
         
     }
 

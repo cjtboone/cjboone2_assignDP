@@ -7,6 +7,7 @@ public class Apiary {
     private static Apiary instance;
     private static ArrayList<Bee> bees;
     private static ArrayList<Bee> update;
+    private static ArrayList<Bee> delete;
     private static Map apiaryMap;
     private static Beediator beediator;
     private static int height;
@@ -16,6 +17,7 @@ public class Apiary {
         beediator = new Beediator();
         bees = new ArrayList<>();
         update = new ArrayList<>();
+        delete = new ArrayList<>();
         apiaryMap = new Map(height, width);
     }
     
@@ -32,11 +34,13 @@ public class Apiary {
         }
         updateBees();
         printMap();
-        System.out.println(bees.size());
         
     }
     
     public void updateBees() {
+        for (Bee bee : delete) {
+            removeBee(bee);
+        }
         for (Bee bee : update) {
             addBee(bee);
         }
@@ -46,32 +50,10 @@ public class Apiary {
         return apiaryMap;
     }
     
-    public static String mapToString() {
-        String output = "";
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                Room room = apiaryMap.getRoom(i, j);
-                if (room.hasBees()) {
-                    output += "B ";
-                } else {
-                    if (room.getFlower()) {
-                        output += "% ";
-                    } else {
-                        if (room.hasHive()) {
-                            output += "& ";
-                        } else {
-                            output += "_ ";
-                        }
-                    }
-                } 
-            }
-            output += "\n";
-        }
-    return output;
-    }
     
-    public static void printMap() {
-        System.out.println(mapToString());
+    
+    public static String printMap() {
+        return (apiaryMap.mapToString());
     }
     
     public static Beediator getMediator() {
@@ -101,6 +83,10 @@ public class Apiary {
     
     public static void newBee(Bee bee) {
         update.add(bee);
+    }
+    
+    public static void deadBee(Bee bee) {
+        delete.add(bee);
     }
     
 }

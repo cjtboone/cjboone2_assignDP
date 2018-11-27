@@ -3,11 +3,11 @@ package main;
 import java.util.Random;
 
 public class Beediator {
-
+    
     public void buildRoom(Bee bee) {
         if (energyCheck(bee)) {
             if (bee.getCurrent().isUnbuilt(bee.getX() + 1, bee.getY())) {
-                bee.getCurrent().getRoom(bee.getX(), bee.getY()).build();
+                bee.getCurrent().getRoom(bee.getX() + 1, bee.getY()).build(bee.getHive());
             } else {
                 randMove(bee);
             }
@@ -22,7 +22,7 @@ public class Beediator {
                 if (bee.inHive()) {
                     bee.deliverFood();
                     System.out.println(bee.getType() + " " + bee.getID() +
-                            "delivered food!");
+                            " delivered food!");
                 } else {
                     moveTowards(bee, bee.getHive());
                 }
@@ -52,7 +52,7 @@ public class Beediator {
                     damage = 10;
                 }
                 (bee.getCurrent().getEnemy(bee.getX(),
-                        bee.getY(), bee)).takeHit(damage);
+                        bee.getY(), bee)).takeHit(damage, bee.getHive());
             } else {
                 warriorMove(bee);
             }
@@ -62,7 +62,7 @@ public class Beediator {
     }
     
     public void layEgg(Bee bee) {
-        if (!bee.getCurrent().isFull(bee.getX(),bee.getY())) {
+        if (!bee.getHive().isFull()) {
             Bee egg = new Bee(bee.getHive(), Type.EGG);
             bee.getCurrent().add(bee.getX(), bee.getY(), egg);
             bee.getHive().addBee(egg);
@@ -76,10 +76,10 @@ public class Beediator {
     
     private void moveTowards(Bee bee, Hive hive) {
         if (bee.getX() == hive.getX() && bee.getY() == hive.getY()) {
-            if (!hive.getMap().isFull(0,0)) {
-                mapMove(bee, hive.getMap());
+            if (hive.getFaction() == 0) {
+                mapMove(bee, Apiary.getApiaryMap());
             } else {
-                //message space
+                mapMove(bee, hive.getMap());
             }
         } else {
             if (Math.abs(bee.getX() - hive.getX()) > 
@@ -117,7 +117,11 @@ public class Beediator {
                 //message space
             }
         } else {
-            moveTowards(bee, bee.getHive());
+            if (bee.getCurrent() != Apiary.getApiaryMap()) {
+                moveTowards(bee, new Hive(0, 0));
+            } else {
+                moveTowards(bee, bee.getHive());
+            }
         }
     }
     
@@ -186,11 +190,7 @@ public class Beediator {
     
     private void leave(Bee bee) {
         if (bee.getX() == 0 && bee.getY() == 0) {
-            if (Apiary.getApiaryMap().isFull(0,0)) {
-                mapMove(bee, Apiary.getApiaryMap());
-            } else {
-                //message space
-            }
+            mapMove(bee, Apiary.getApiaryMap());
         } else {
             if (bee.getX() > 0 && bee.getCurrent().isOpen(bee.getX() - 1, bee.getY())) {
                 move(bee, -1, 0);

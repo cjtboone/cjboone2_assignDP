@@ -11,6 +11,7 @@ public class Hive {
     private Map hiveMap;
     private int x;
     private int y;
+    private int popcap;
     
     private static int number = 0;
     
@@ -20,12 +21,19 @@ public class Hive {
         
     }
     
+    public Hive(int x, int y) {
+        this.x = x;
+        this.y = y;
+        this.faction = 0;
+    }
+    
     public void hiveInit(int x, int y) {
         this.x = x;
         this.y = y;
         this.food = 50;
         this.hiveMap = new Map();
         this.faction = ++number;
+        this.popcap = 160;
         
         Bee queenB = new Bee(this, Type.QUEEN);
         addBee(queenB);
@@ -55,9 +63,14 @@ public class Hive {
         
     }
     
-    
     public ArrayList<Species> getSpecies() {
         return species;
+    }
+    
+    public void queenDeath(Hive hive) {
+        for (Bee bee : bees) {
+            bee.setHive(hive);
+        }
     }
     
     public void addFood(int amount) {
@@ -76,6 +89,18 @@ public class Hive {
         return hiveMap;
     }
     
+    public void setPopCap(int cap) {
+        popcap = cap;
+    }
+    
+    public int getPopCap() {
+        return popcap;
+    }
+    
+    public boolean isFull() {
+        return (bees.size() >= popcap);
+    }
+    
     public ArrayList<Bee> getBees() {
         return bees;
     }
@@ -92,8 +117,16 @@ public class Hive {
         return x;
     }
     
+    public void setX(int x) {
+        this.x = x;
+    }
+    
     public int getY() {
         return y;
+    }
+    
+    public void setY(int y) {
+        this.y = y;
     }
     
     public int getFaction() {

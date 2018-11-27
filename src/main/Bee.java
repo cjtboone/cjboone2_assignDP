@@ -78,15 +78,19 @@ public class Bee {
         }
     }
     
-    public void takeHit(int damage) {
+    public void takeHit(int damage, Hive hive) {
         if (species.contains(Species.TOUGH)) {
             health -= damage + 10;
         } else {
             health -= damage;
         }
         if (health <= 0) {
+            if (beeType.equals(Type.QUEEN)) {
+                home.queenDeath(hive);
+            }
             current.remove(x, y, this);
             home.removeBee(this);
+            Apiary.deadBee(this);
         }
     }
     
@@ -146,6 +150,10 @@ public class Bee {
         } else {
             return false;
         }
+    }
+    
+    public void setHive(Hive hive) {
+        this.home = hive;
     }
     
     public int getEnergy() {

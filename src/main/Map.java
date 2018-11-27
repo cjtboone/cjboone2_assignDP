@@ -8,8 +8,12 @@ public class Map {
     private Room[][] rooms;
     private ArrayList<Hive> hives;
     private boolean hiveMap;
+    private int height;
+    private int width;
     
     public Map(int x, int y) {
+        height = x;
+        width = y;
         rooms = new Room[x][y];
         hives = new ArrayList<>();
         this.overworldInit();
@@ -17,6 +21,8 @@ public class Map {
     
     public Map() {
         rooms = new Room[25][25];
+        height = 25;
+        width = 25;
         hiveMap = true;
         this.hivemapInit();
     }
@@ -68,7 +74,7 @@ public class Map {
         makeRoom(brb);
         
         for (int i2 = 0; i2 < rooms.length; i2++) {
-            for (int j2 = 0; j2 < rooms[i2].length; j2++) {
+            for (int j2 = 0; j2 < rooms[0].length; j2++) {
                 rooms[i2][j2] = new Room(ubrb.getRoom());
             }
         }
@@ -81,24 +87,12 @@ public class Map {
         
     }
     
-    public void moveTo(int x, int y, Bee bee) {
-        rooms[x][y].add(bee);
-    }
-    
-    public void enterHive(int x, int y, Bee bee) {
-        
-    }
-    
     public boolean isFlower(int x, int y) {
         return rooms[x][y].getFlower();
     }
 
     public Room getRoom(int x, int y) {
         return rooms[x][y];
-    }
-    
-    public boolean isFull(int x, int y) {
-        return (rooms[x][y].isFull());
     }
     
     public boolean hasEnemy(int x, int y, Bee bee) {
@@ -153,7 +147,7 @@ public class Map {
     
     public boolean isOpen(int x, int y) {
         if (x >= 0 && x < rooms.length && y >= 0 && y < rooms[0].length) {
-            return (rooms[x][y].isBuilt() && !rooms[x][y].isFull());
+            return (rooms[x][y].isBuilt());
         } else {
             return false;
         }
@@ -161,10 +155,34 @@ public class Map {
 
     public boolean isUnbuilt(int x, int y) {
         if (x >= 0 && x < rooms.length && y >= 0 && y < rooms[0].length) {
-            return (!rooms[x][y].isBuilt());
+            return (rooms[x][y].isBuilt() == false);
         } else {
             return false;
         }
+    }
+    
+    public String mapToString() {
+        String output = "";
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                Room room = this.getRoom(i, j);
+                if (room.hasBees()) {
+                    output += "B ";
+                } else {
+                    if (room.getFlower()) {
+                        output += "% ";
+                    } else {
+                        if (room.hasHive()) {
+                            output += "& ";
+                        } else {
+                            output += "_ ";
+                        }
+                    }
+                } 
+            }
+            output += "\n";
+        }
+    return output;
     }
     
 }

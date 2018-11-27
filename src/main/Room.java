@@ -32,19 +32,16 @@ public class Room {
         inside.remove(bee);
     }
     
-    public void build() {
+    public void build(Hive hive) {
         workLeft--;
         if (workLeft <= 0) {
             built = true;
+            hive.setPopCap(hive.getPopCap() + this.capacity);
         }
     }
     
     public boolean getFlower() {
         return isFlower;
-    }
-    
-    public boolean isFull() {
-        return (inside.size() >= capacity);
     }
     
     public ArrayList<Bee> getInside() {
