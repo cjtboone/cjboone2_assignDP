@@ -3,8 +3,8 @@ package main;
 public class ConcreteHiveBuilder extends HiveBuilder {
 
     @Override
-    public void BuildHive() {
-        // TODO Auto-generated method stub
+    public void buildHive(Map hive, int x, int y) {
+        hive.getRoom(x, y).build();
         
     }
     

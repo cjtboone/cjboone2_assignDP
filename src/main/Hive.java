@@ -10,15 +10,9 @@ public class Hive {
     private Room[][] rooms;
     private ArrayList<Bee> bees;
     private Map hiveMap;
+    private int x;
+    private int y;
     
-    public int getFood() {
-        return food;
-    }
-    
-    public void eatFood(Bee bee) {
-        food--;
-        bee.giveEnergy(100);
-    }
     
     public ArrayList<Species> getSpecies() {
         return species;
@@ -28,7 +22,23 @@ public class Hive {
         food += amount;
     }
     
+    public void decFood() {
+        food--;
+    }
+    
+    public int getFood() {
+        return food;
+    }
+    
     public Map getMap() {
         return hiveMap;
+    }
+    
+    public int getX() {
+        return x;
+    }
+    
+    public int getY() {
+        return y;
     }
 }

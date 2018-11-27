@@ -35,7 +35,7 @@ public class Bee {
     
     public void takeHit(int damage) {
         if (species.contains(Species.TOUGH)) {
-            health -= damage + 5;
+            health -= damage + 10;
         } else {
             health -= damage;
         }
@@ -44,16 +44,10 @@ public class Bee {
         }
     }
     
-    public void rest() {
-        if (home.getFood() > 0) {
-            home.eatFood(this);
-        }
-    }
-    
     public void grow() {
         eggAge--;
         if (eggAge == 0) {
-            
+            //type selection
         }
     }
     
@@ -70,8 +64,8 @@ public class Bee {
         energy--;
     }
     
-    public void giveEnergy(int calories) {
-        energy += calories;
+    public void setEnergy(int mEnergy) {
+        energy = mEnergy;
     }
     
     public Hive getHive() {
@@ -91,11 +85,40 @@ public class Bee {
         food = false;
     }
     
+    public void eatFood() {
+        home.decFood();
+        setEnergy(100);
+    }
+    
     public boolean inHive() {
         if (home.getMap().equals(current)) {
             return true;
         } else {
             return false;
         }
+    }
+    
+    public int getEnergy() {
+        return energy;
+    }
+    
+    public int getHealth() {
+        return health;
+    }
+    
+    public int getX() {
+        return x;
+    }
+    
+    public int getY() {
+        return y;
+    }
+    
+    public Map getCurrent() {
+        return current;
+    }
+    
+    public ArrayList<Species> getSpecies() {
+        return species;
     }
 }
