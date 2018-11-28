@@ -1,4 +1,13 @@
 package main;
+/**
+ * Strategy pattern
+ * Note the mediator object, pretty
+ * much integrated it right into
+ * this one. Picks different thing
+ * to do each turn depending on the job
+ * of the bee.
+ *
+ */
 
 public abstract class JobStrategy {
 

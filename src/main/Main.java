@@ -1,4 +1,11 @@
 package main;
+/**
+ * Main class
+ * Nothing too hard about running it,
+ * mostly works on its own. Can fiddle
+ * around with some of the hardcoded stuff
+ * but 
+ */
 
 import java.awt.FlowLayout;
 
@@ -17,11 +24,12 @@ public final class Main {
     
     /**
      * Main method for running bee simulation, displays ASCII
-     * map in a GUI.
+     * map in a GUI (at least it usually does, seems to be
+     * less and less stable, actually looks pretty good
+     * when it works right).
      * @param args n/a
      */
     public static void main(String[] args) {
-        
         
         frame = new JFrame("Bees, not Ants");
         display = new JTextPane();
@@ -41,7 +49,7 @@ public final class Main {
         apiary = Apiary.getApiary();
         livingQueens();
         fedHives();
-        ticks = 1000;
+        ticks = 100000;
         
         while (livingQueens > 1 && fedHives > 0 && ticks > 0) {
             display.setText(Apiary.printMap());
@@ -49,9 +57,12 @@ public final class Main {
             livingQueens();
             fedHives();
             ticks--;
+            try {
+                Thread.sleep(300);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
-        
-        System.exit(0);
         
     }
     

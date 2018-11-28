@@ -1,4 +1,12 @@
 package main;
+/**
+ * Mediator pattern class
+ * (get it? BEEdiator)
+ * Pretty much handles all of the movement,
+ * fighting, eating, everything that these
+ * bees do.
+ */
+
 
 import java.util.Random;
 
@@ -104,8 +112,8 @@ public class Beediator {
             bee.getCurrent().add(bee.getX(), bee.getY(), egg);
             bee.getHive().addBee(egg);
             Apiary.newBee(egg);
-            System.out.println(bee.getType().toString() + " " + bee.getId() 
-                + " of Hive " + bee.getHive().getFaction() + " laid an egg!");
+            //System.out.println(bee.getType().toString() + " " + bee.getId() 
+            //    + " of Hive " + bee.getHive().getFaction() + " laid an egg!");
         } else {
             //message space
         }

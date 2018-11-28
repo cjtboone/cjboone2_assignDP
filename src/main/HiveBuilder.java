@@ -1,5 +1,12 @@
 package main;
-
+/**
+ * Builder pattern
+ * Used when initializing the maps, creates one
+ * room reference and clones it in arrays
+ * The rooms became pretty similar near 
+ * the end but in theory it can be
+ * expanded.
+ */
 public abstract class HiveBuilder {
     
     public abstract void setWorkLeft();
