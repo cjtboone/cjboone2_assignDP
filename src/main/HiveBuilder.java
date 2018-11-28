@@ -7,6 +7,7 @@ package main;
  * the end but in theory it can be
  * expanded.
  */
+
 public abstract class HiveBuilder {
     
     public abstract void setWorkLeft();

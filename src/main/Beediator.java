@@ -7,7 +7,6 @@ package main;
  * bees do.
  */
 
-
 import java.util.Random;
 
 public class Beediator {
