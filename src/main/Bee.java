@@ -123,7 +123,7 @@ public class Bee {
             current.remove(xpos, ypos, this);
             home.removeBee(this);
             Apiary.deadBee(this);
-            System.out.println("Something died!");
+            //System.out.println("Something died!");
         }
     }
     

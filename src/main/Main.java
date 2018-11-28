@@ -49,7 +49,7 @@ public final class Main {
         apiary = Apiary.getApiary();
         livingQueens();
         fedHives();
-        ticks = 100000;
+        ticks = 1000;
         
         while (livingQueens > 1 && fedHives > 0 && ticks > 0) {
             display.setText(Apiary.printMap());
@@ -58,7 +58,7 @@ public final class Main {
             fedHives();
             ticks--;
             try {
-                Thread.sleep(300);
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
